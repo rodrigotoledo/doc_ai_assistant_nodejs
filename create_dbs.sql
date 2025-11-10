@@ -1,0 +1,2 @@
+CREATE DATABASE IF NOT EXISTS doc_reader_dev;
+CREATE DATABASE IF NOT EXISTS doc_reader_test;

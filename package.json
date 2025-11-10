@@ -26,13 +26,14 @@
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-  "test": "jest",
-  "test:watch": "jest --watchAll",
-  "test:watch:nodemon": "nodemon --watch src --watch tests --ext js,json --exec \"npm test\"",
+    "test": "NODE_ENV=test jest",
+    "test:watch": "NODE_ENV=test jest --watchAll",
+    "test:watch:nodemon": "NODE_ENV=test nodemon --watch src --watch tests --ext js,json --exec \"npm test\"",
     "prisma": "prisma",
     "prisma:generate": "prisma generate",
     "prisma:migrate:dev": "prisma migrate dev --schema=src/prisma/schema.prisma",
-    "test:coverage": "jest --coverage",
-    "test:watch:nodemon:coverage": "nodemon --watch src --watch tests --ext js,json --exec \"npm run test:coverage\""
+    "prisma:migrate:test": "NODE_ENV=test prisma migrate deploy --schema=src/prisma/schema.prisma",
+    "test:coverage": "NODE_ENV=test jest --coverage",
+    "test:watch:nodemon:coverage": "NODE_ENV=test nodemon --watch src --watch tests --ext js,json --exec \"npm run test:coverage\""
   }
 }
