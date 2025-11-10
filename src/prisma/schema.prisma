@@ -1,0 +1,25 @@
+// Prisma schema for doc-reader
+// Troque o provider para "mongodb" se quiser usar MongoDB no futuro
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Exemplo de modelo - ajuste conforme suas necessidades
+model Document {
+  id        String   @id @default(uuid()) @map("id")
+  filename  String   @map("filename")
+  mimetype  String?  @map("mimetype")
+  size      Int?     @map("size")
+  content   String?  @map("content")
+  slug      String?  @unique @map("slug")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("documents")
+}
