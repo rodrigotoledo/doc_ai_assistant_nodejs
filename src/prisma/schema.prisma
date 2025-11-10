@@ -12,13 +12,14 @@ datasource db {
 
 // Exemplo de modelo - ajuste conforme suas necessidades
 model Document {
-  id        String   @id @default(uuid())
-  filename  String
-  mimetype  String
-  size      Int
-  content   String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String   @id @default(uuid()) @map("id")
+  filename  String   @map("filename")
+  mimetype  String?  @map("mimetype")
+  size      Int?     @map("size")
+  content   String?  @map("content")
+  slug      String?  @unique @map("slug")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("documents")
 }
