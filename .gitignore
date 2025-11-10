@@ -156,3 +156,6 @@ coverage/
 /vendor/
 
 # End of file
+
+# Uploaded files (kept out of repo)
+uploads/
