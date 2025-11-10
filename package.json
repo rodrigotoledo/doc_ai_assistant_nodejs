@@ -8,13 +8,14 @@
     "test": "jest",
     "prisma": "prisma",
     "prisma:generate": "prisma generate",
-    "prisma:migrate:dev": "prisma migrate dev"
+    "prisma:migrate:dev": "prisma migrate dev --schema=src/prisma/schema.prisma"
   },
   "dependencies": {
     "@prisma/client": "^6.19.0",
     "express": "^5.1.0",
     "multer": "^2.0.2",
-    "prisma": "^6.19.0"
+    "prisma": "^6.19.0",
+  "zod": "^4.1.12"
   },
   "devDependencies": {
     "dotenv": "^17.2.3",
