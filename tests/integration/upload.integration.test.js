@@ -2,30 +2,17 @@ const fs = require('fs');
 const path = require('path');
 const request = require('supertest');
 
-// Mock the Prisma client used by the service so the test doesn't require a real DB.
-// We still exercise the full HTTP stack and multer file handling.
-const mockPrisma = {
-  document: {
-    findFirst: jest.fn().mockResolvedValue(null),
-    create: jest.fn((obj) => Promise.resolve({ id: 'test-uuid', ...obj.data, createdAt: new Date(), updatedAt: new Date() })),
-    findMany: jest.fn().mockResolvedValue([]),
-    findUnique: jest.fn().mockResolvedValue(null),
-    delete: jest.fn().mockResolvedValue(null),
-  },
-};
-
-jest.mock('../../src/prisma/client', () => mockPrisma);
-
 const app = require('../../src/server');
+const prisma = require('../../src/prisma/client');
 
 describe('integration: file upload', () => {
   const uploadsDir = path.join(process.cwd(), 'uploads');
   const fixture = path.join(__dirname, '..', 'fixtures', 'identification.txt');
 
   // uploads dir and cleanup are handled by shared Jest setup hooks (tests/setup/setup.js)
-  afterEach(() => {
-    mockPrisma.document.findFirst.mockClear();
-    mockPrisma.document.create.mockClear();
+  afterEach(async () => {
+    // Clean up database records
+    await prisma.document.deleteMany();
   });
 
   test('uploads a file and creates document record', async () => {
@@ -39,7 +26,7 @@ describe('integration: file upload', () => {
     }
     expect(res.status).toBe(201);
 
-    expect(res.body).toHaveProperty('id', 'test-uuid');
+    expect(res.body).toHaveProperty('id');
     expect(res.body.filename).toBe('identification.txt');
     expect(res.body.content).toMatch(/^uploads\//);
 
@@ -47,9 +34,9 @@ describe('integration: file upload', () => {
     const saved = path.join(process.cwd(), res.body.content);
     expect(fs.existsSync(saved)).toBe(true);
 
-    // prisma.create was called with the payload we expect (filename present)
-    expect(mockPrisma.document.create).toHaveBeenCalled();
-    const createdData = mockPrisma.document.create.mock.calls[0][0].data;
-    expect(createdData.filename).toBe('identification.txt');
+    // verify in database
+    const doc = await prisma.document.findUnique({ where: { id: res.body.id } });
+    expect(doc).toBeTruthy();
+    expect(doc.filename).toBe('identification.txt');
   });
 });

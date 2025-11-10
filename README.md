@@ -61,6 +61,23 @@ The stack includes two databases for flexibility:
 - PostgreSQL (port 5432) — primary
 - MongoDB (port 27017) — available if you decide to migrate later
 
+### Database Environments (Development vs Test)
+
+Similar to Rails, this project uses separate PostgreSQL databases for development and testing:
+
+- **Development**: `doc_reader_dev` database
+- **Test**: `doc_reader_test` database
+
+The app automatically switches databases based on the `NODE_ENV` environment variable:
+
+- `NODE_ENV=development` (default in Docker) → uses `doc_reader_dev`
+- `NODE_ENV=test` (set during testing) → uses `doc_reader_test`
+
+This ensures:
+- Development data doesn't interfere with tests
+- Tests run against a clean database state
+- Integration tests use real database operations (no mocks for DB layer)
+
 ### Switching from PostgreSQL to MongoDB
 
 1. Edit `.env` and point `DATABASE_URL` to the MongoDB URL (comment out the PostgreSQL URL).
