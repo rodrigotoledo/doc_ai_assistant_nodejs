@@ -1,0 +1,7 @@
+Name: João Silva
+Address: Rua Exemplo 123, Bairro Central, Cidade X
+Company: ACME Corp
+ID: 123456789
+Email: joao.silva@example.com
+
+Note: fixture file for integration test (identification text)
