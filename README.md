@@ -159,6 +159,11 @@ Scripts available in `package.json` (use inside the running app container or loc
 Examples (run inside container via Docker Compose):
 
 ```bash
+# Prisma commands
+docker compose exec app npm run prisma
+docker compose exec app npm run prisma:generate
+docker compose exec app npm run prisma:migrate:dev
+
 # interactive Jest watch (recommended for fast dev feedback)
 docker compose exec app npm run test:watch
 

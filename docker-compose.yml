@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
 
   postgres:
-    image: postgres:16-alpine
+    image: ankane/pgvector:latest
     container_name: doc-reader-postgres
     env_file:
       - .env
@@ -46,19 +46,19 @@ services:
       - mongodata:/data/db
     restart: unless-stopped
 
-  pgadmin:
-    image: dpage/pgadmin4:7
-    container_name: doc-reader-pgadmin
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@example.com}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-    ports:
-      - "5050:80"
-    volumes:
-      - pgadmindata:/var/lib/pgadmin
-    depends_on:
-      - postgres
-    restart: unless-stopped
+  # pgadmin:
+  #   image: dpage/pgadmin4:7
+  #   container_name: doc-reader-pgadmin
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@example.com}
+  #     PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+  #   ports:
+  #     - "5050:80"
+  #   volumes:
+  #     - pgadmindata:/var/lib/pgadmin
+  #   depends_on:
+  #     - postgres
+  #   restart: unless-stopped
 
   mongo-express:
     image: mongo-express:1.0.0
@@ -78,5 +78,5 @@ services:
 volumes:
   pgdata:
   mongodata:
-  pgadmindata:
+  # pgadmindata:
   node_modules:
